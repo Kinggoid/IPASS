@@ -47,9 +47,12 @@ stukken(board)
 
 
 
-def draw_board(scherm, lengte_vakje, hoogte_vakje):
+def draw_board(board, scherm, lengte_vakje, hoogte_vakje, radius, rand):
     zwart = (0, 0, 0)
+    zwart_rand = (128, 128, 128)
+    wit_stuk = (250, 250, 250)
     wit_achtergrond = (150, 150, 150)
+    goud = (255, 215, 0)
 
     kleur = 1
 
@@ -62,8 +65,26 @@ def draw_board(scherm, lengte_vakje, hoogte_vakje):
                 kleur_van_vakje = zwart
                 kleur = 1
 
-
             vakje = pygame.draw.rect(scherm, kleur_van_vakje, [lengte_vakje * j, hoogte_vakje * i, lengte_vakje, hoogte_vakje])
+            plaats_vakje = vakje.center
+            if board[i][j] == 1:
+                pygame.draw.circle(scherm, wit_stuk, plaats_vakje, radius)
+            if board[i][j] == 2:
+                pygame.draw.circle(scherm, zwart, plaats_vakje, radius)
+                pygame.draw.circle(scherm, zwart_rand, plaats_vakje, radius, rand)
+
+        if kleur == 1:
+            kleur = 0
+        else:
+            kleur = 1
+
+
+def soldaat_zetten(board, stuk):
+    kleur = stuk.team
+    if kleur:
+        pass
+    else:
+        pass
 
 
 
@@ -82,10 +103,10 @@ def inner_loop():
             print('lol')
             clock = pygame.time.Clock()
             clock.tick(10)
-            draw_board(scherm, afmetingen[0] // 8, afmetingen[1] // 8)
+            draw_board(board, scherm, afmetingen[0] // 8, afmetingen[1] // 8, afmetingen[0] // 20, afmetingen[1] // 150)
             pygame.display.flip()
             if event.type == pygame.QUIT:
-                game_over = True
+                game_over = 1
 
 
 inner_loop()

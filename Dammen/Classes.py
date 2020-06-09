@@ -41,10 +41,7 @@ def stukken(spelbord):
             spelbord[int(posities[i][0])][int(posities[i][1])] = 1
         else:
             spelbord[int(posities[i][0])][int(posities[i][1])] = 2
-
-
-stukken(board)
-
+    return lst
 
 
 def draw_board(board, scherm, lengte_vakje, hoogte_vakje, radius, rand):
@@ -52,7 +49,6 @@ def draw_board(board, scherm, lengte_vakje, hoogte_vakje, radius, rand):
     zwart_rand = (128, 128, 128)
     wit_stuk = (250, 250, 250)
     wit_achtergrond = (150, 150, 150)
-    goud = (255, 215, 0)
 
     kleur = 1
 
@@ -89,11 +85,13 @@ def soldaat_zetten(board, stuk):
 
 
 def inner_loop():
+    sprites = stukken(board)
+
     pygame.init()
     afmetingen = [900, 900]
     scherm = pygame.display.set_mode(afmetingen)
 
-    pygame.display.set_caption("Checkers")
+    pygame.display.set_caption("Dammen")
 
     clock = pygame.time.Clock()
 
@@ -101,12 +99,26 @@ def inner_loop():
     while game_over == 0:
         for event in pygame.event.get():
             print('lol')
+
+            if event.type == pygame.QUIT:
+                game_over = 1
+
+            if event.type == pygame.MOUSEBUTTONUP:
+                pos = pygame.mouse.get_pos()
+                clicked_sprites = [s for s in sprites if s.rect.collidepoint(pos)]
+
+
             clock = pygame.time.Clock()
             clock.tick(10)
             draw_board(board, scherm, afmetingen[0] // 8, afmetingen[1] // 8, afmetingen[0] // 20, afmetingen[1] // 150)
             pygame.display.flip()
-            if event.type == pygame.QUIT:
-                game_over = 1
+
+            muis_coordinaten = pygame.mouse.get_pos()
+            muis = ((muis_coordinaten[0] // afmetingen[0]), (muis_coordinaten[1] // afmetingen[1]))
+
+            pygame.display.update()
+
+
 
 
 inner_loop()
